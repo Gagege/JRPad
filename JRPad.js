@@ -1,3 +1,6 @@
+var strokeWidth = 8;
+var strokeColor = "ff5500";
+
 $(document).ready(function() {
 
 	document.ondragstart = function(e) { return false; }
@@ -13,8 +16,6 @@ $(document).ready(function() {
 	var oldx = 0;
 	var oldy = 0;
 	var isMouseDown = false;
-	var strokeWidth = 8;
-	var strokeColor = "ff5500";
 	
 	$("#draw").mousedown( function()
 	{
