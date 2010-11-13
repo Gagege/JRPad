@@ -58,9 +58,5 @@ $(document).ready(function() {
 			oldx = x;
 			oldy = y;
 		}
-		
-		//var coords = x + ", " + y;
-		
-		//$("#coordinatesLabel").text(coords);
 	});
 });
