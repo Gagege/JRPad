@@ -1,13 +1,14 @@
-var strokeWidth = 8;
-var strokeColor = "ff5500";
+var strokeWidth = 4;
+var strokeColor = "#555555";
 
 $(document).ready(function() {
 
 	document.ondragstart = function(e) { return false; }
 	
-	var paper = Raphael(document.getElementById("draw"), 200, 200);
-
-	var c = paper.rect(0, 0, 200, 200);
+	var width = $("draw").width();
+	var height = $("draw").height();
+	
+	var paper = Raphael(document.getElementById("draw"), width, height);
 	
 	var offset = $("#draw").offset();
 	
@@ -17,9 +18,23 @@ $(document).ready(function() {
 	var oldy = 0;
 	var isMouseDown = false;
 	
-	$("#draw").mousedown( function()
+	$("#draw").mousedown( function(e)
 	{
 		isMouseDown = true;
+		
+		//draw dot on single mouse click
+		x = e.pageX - offset.left;
+		y = e.pageY - offset.top;
+		
+		var segment = paper.circle(x, y, strokeWidth / 2);
+		
+		segment.attr(
+				{
+					//"stroke-width": strokeWidth + "px",
+					stroke: strokeColor,
+					fill: strokeColor
+				});
+		
 	}).mouseup( function()
 	{
 		isMouseDown = false;
@@ -47,7 +62,7 @@ $(document).ready(function() {
 				{
 					"stroke-width": strokeWidth + "px",
 					"stroke-linecap": "round",
-					stroke: "#" + strokeColor
+					stroke: strokeColor
 				});
 				
 				oldx = x;
