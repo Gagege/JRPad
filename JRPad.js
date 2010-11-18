@@ -1,24 +1,44 @@
-var strokeWidth = 4;
-var strokeColor = "#555555";
+var paper;
+function JRPad(domElementID)
+{
+	//functions
+	this.update = update;
+	this.erase = erase;
+	
+	//variables
+	this.id = domElementID;
+	this.fullID = "#" + domElementID;
+	
+	this.strokeWidth = 14;
+	this.strokeColor = "#444499";
+	this.backgroundColor = "#ffffff";
+	
+	var width = $(this.fullID).width();
+	var height = $(this.fullID).height();
 
-$(document).ready(function() {
+	paper = Raphael(document.getElementById(this.id), width, height);
+	
+	this.drawing = [];
+}
 
+function update()
+{
+	
+	//stop browser from initiating it's drag function
 	document.ondragstart = function(e) { return false; }
 	
-	var width = $("draw").width();
-	var height = $("draw").height();
-	
-	var paper = Raphael(document.getElementById("draw"), width, height);
-	
-	var offset = $("#draw").offset();
+	var offset = $(this.fullID).offset();
 	
 	var x;
 	var y;
 	var oldx = 0;
 	var oldy = 0;
 	var isMouseDown = false;
+	var color = this.strokeColor;
+	var bgColor = this.backgroundColor;
+	var stWidth = this.strokeWidth;
 	
-	$("#draw").mousedown( function(e)
+	$(this.fullID).mousedown( function(e)
 	{
 		isMouseDown = true;
 		
@@ -26,13 +46,10 @@ $(document).ready(function() {
 		x = e.pageX - offset.left;
 		y = e.pageY - offset.top;
 		
-		var segment = paper.circle(x, y, strokeWidth / 2);
-		
-		segment.attr(
+		paper.circle(x, y, stWidth / 2).attr(
 				{
-					//"stroke-width": strokeWidth + "px",
-					stroke: strokeColor,
-					fill: strokeColor
+					stroke: bgColor,
+					fill: color
 				});
 		
 	}).mouseup( function()
@@ -40,7 +57,7 @@ $(document).ready(function() {
 		isMouseDown = false;
 	});
 	
-	$("#draw").mousemove( function(e)
+	$(this.fullID).mousemove( function(e)
 	{
 		x = e.pageX - offset.left;
 		y = e.pageY - offset.top;
@@ -56,13 +73,12 @@ $(document).ready(function() {
 					oldy = y;
 				}
 				
-				var segment = paper.path("M" + oldx + " " + oldy + "L" + x + " " + y);
-				
-				segment.attr(
+				parent.paper.path("M" + oldx + " " + oldy + "L" + x + " " + y).attr(
 				{
-					"stroke-width": strokeWidth + "px",
+					"stroke-width": stWidth + "px",
 					"stroke-linecap": "round",
-					stroke: strokeColor
+					stroke: color,
+					opacity: 100
 				});
 				
 				oldx = x;
@@ -75,4 +91,10 @@ $(document).ready(function() {
 			oldy = y;
 		}
 	});
-});
+	return;
+}
+
+function erase()
+{
+	this.strokeColor = this.backgroundColor;
+}
