@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>	
+		<title>JRPad demo</title>
+		<style>
+			#pad {
+				width : 800px;
+				height : 600px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="pad"></div>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+		<script type="text/javascript" src="raphael.js"></script>
+		<script type="text/javascript" src="./JRPad.js"></script>
+		<script type="text/javascript">
+			/*(function ($) {
+				$.fn.JRPad = function () {
+					
+				};
+			})(jQuery);*/
+		</script>
+		<script type="text/javascript">
+			$(function () {
+				var newPad = new JRPad('#pad'),
+					colours = ['#ffaa00', '#ff00ff', '#aaff00'],
+					dom = $('#pad')
+					.mousedown(function(e) {
+							newPad.setMouse(true);
+							newPad.drawDot(e);
+							
+							return false;
+						})
+					.mouseup(function() {
+							newPad.setMouse(false);
+						})
+					.mousemove(function(e) {
+							newPad.drawLine(e);
+						});
+				ctrl = $('<div />');
+				for (var c in colours)
+					$('<button />')
+						.addClass('colour')
+						.text(colours[c])
+						.css('backgroundColor', colours[c])
+						.appendTo(ctrl);
+				var i=0;
+				while (i < 10)
+					$('<button />')
+						.addClass('stroke')
+						.text('Stroke: ' + (i = 1+i*i))
+						.appendTo(ctrl);
+				
+				ctrl
+					.delegate('button.colour', 'click', function () { newPad.setColor($(this).text()); })
+					.delegate('button.stroke', 'click', function () { newPad.setWidth(parseInt($(this).text().split(/\s/)[1])); })
+					.insertAfter(dom);
+			});
+		</script>
+	</body>
+</html>
