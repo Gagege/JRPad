@@ -21,6 +21,14 @@
 window['JRPad'] = (function () {
 	function JRPad(domElementID)
 	{
+		if (typeof domElementID === 'string') {
+			if (domElementID.indexOf('#') === 0)
+				domElementID = domElementID.substr(1);
+			this.domNode = document.getElementById(domElementID);
+		} else if (typeof domElementID === 'object') {
+			this.domNode = domElementID;
+		}
+	
 		//functions
 		this.setMouse = setMouse;
 		this.drawDot = drawDot;
@@ -31,21 +39,21 @@ window['JRPad'] = (function () {
 		
 		//variables
 		this.id = domElementID;
-		this.fullID = "#" + domElementID;
 		
 		this.strokeWidth = 1;
 		this.strokeColor = "#000000";
 		this.backgroundColor = "#ffffff";
 		
-		var width = $(this.fullID).width();
-		var height = $(this.fullID).height();
+		var	jDomNode = $(this.domNode),
+			width = $(jDomNode).width(),
+			height = $(jDomNode).height();
 		
-		this.offset = $(this.fullID).offset();
+		this.offset = $(jDomNode).offset();
 		
 		this.previousX = 0;
 		this.previousY = 0;
 
-		this.paper = Raphael(document.getElementById(this.id), width, height);
+		this.paper = Raphael(this.domNode, width, height);
 		this.background = this.paper.rect(this.offset.left - 8, this.offset.top - 8, width, height).attr({fill: "white"});
 		
 		this.mouseIsDown = false;
