@@ -48,7 +48,7 @@ window['JRPad'] = (function () {
 			width = $(jDomNode).width(),
 			height = $(jDomNode).height();
 		
-		this.offset = $(jDomNode).offset();
+		this.offset = jDomNode.offset();
 		
 		this.previousX = 0;
 		this.previousY = 0;
