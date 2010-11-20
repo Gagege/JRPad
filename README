@@ -5,7 +5,7 @@ Released 2010-11-20
 
 Contact the author: gage.herrmann@gmail.com
 
-This library requires two jQuery and RaphaelJS to work.
+This library requires jQuery and RaphaelJS to work.
 You can find these at: jquery.com and raphaeljs.com respectively.
 
 --------INSTALLATION--------
