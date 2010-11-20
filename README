@@ -1,1 +1,53 @@
-jQuery + RaphaelJS = a notepad you can draw on
+JRPad by Gage Herrmann
+
+Version 1.0
+Released 2010-11-20
+
+Contact the author: gage.herrmann@gmail.com
+
+This library requires two jQuery and RaphaelJS to work.
+You can find these at: jquery.com and raphaeljs.com respectively.
+
+--------INSTALLATION--------
+Include jQuery, RaphaelJS and JRPad in the head of an html document.
+
+Example:
+
+	<SCRIPT LANGUAGE="JavaScript" type="text/javascript" SRC="jQuery.js"></SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript" type="text/javascript" SRC="raphael.js"></SCRIPT>
+	<SCRIPT LANGUAGE="JavaScript" type="text/javascript" SRC="JRPad.js"></SCRIPT>
+	
+--------USAGE--------
+
+It's probably a good idea to be fairly familiar with jQuery before using JRPad: http://docs.jquery.com/Main_Page
+
+JRPad tutorial coming soon at gagege.tumblr.com
+
+-Put all JRPad calls inside of a jQuery $(document).ready function.
+-You must pass the id of the div element you want the JRPad to be in to JRPad's constructor:
+						var newPad = new JRPad("drawingArea");
+						(note that the "#" symbol before the id is not needed)
+						
+-And have a div like:
+						<div id="drawingArea" style="width:200px; height:400px;"></div>
+						(JRPad will size itself to to 200 by 400 pixels automatically)
+						
+-Here's the messy part. Include this code (Assuming your div is named "drawingArea". You can of course call it whatever you want.):
+						$("#drawingArea").mousedown( function(e)
+						{
+							newPad.setMouse(true);
+							newPad.drawDot(e);
+						}).mouseup( function()
+						{
+							newPad.setMouse(false);
+						});
+
+						$("#drawingArea").mousemove( function(e)
+						{
+							panewPad.drawLine(e);
+						});
+						
+-Other functions available:
+						.eraser(); //changes the stroke color to the same color as the background. Call it in a jQuery click event for best results.
+						.setColor(colorValue) //can take html color names ("red", "green", "black") or hex color values ("#000000", "#3f2a5e").
+						.setWidth(widthValue) //pass an int or a decimal to it to change the width (thickness, size, whatever) of the "brush".
