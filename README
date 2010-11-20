@@ -37,6 +37,7 @@ JRPad tutorial coming soon at gagege.tumblr.com
 						{
 							newPad.setMouse(true);
 							newPad.drawDot(e);
+							return false;
 						}).mouseup( function()
 						{
 							newPad.setMouse(false);
