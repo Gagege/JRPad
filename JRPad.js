@@ -32,7 +32,9 @@ window['JRPad'] = (function () {
 		//functions
 		this.setMouseDown = setMouseDown;
 		this.drawDot = drawDot;
+		this.renderDot = renderDot;
 		this.drawLine = drawLine;
+		this.renderLine = renderLine;
 		this.eraser = eraser;
 		this.setColor = setColor;
 		this.setWidth = setWidth;
@@ -58,6 +60,8 @@ window['JRPad'] = (function () {
 		
 		this.mouseIsDown = false;
 		
+		this.saveString = "[";
+		
 	}
 
 	function setMouseDown(isDown)
@@ -71,11 +75,16 @@ window['JRPad'] = (function () {
 		var x = e.pageX - this.offset.left;
 		var y = e.pageY - this.offset.top;
 		
+		this.renderDot(x, y);
+	}
+	
+	function renderDot(x, y)
+	{
 		this.paper.circle(x, y, this.strokeWidth / 2).attr(
-				{
-					stroke: this.strokeColor,
-					fill: this.strokeColor
-				});
+		{
+			stroke: this.strokeColor,
+			fill: this.strokeColor
+		});
 	}
 
 	function drawLine(e)
@@ -93,12 +102,8 @@ window['JRPad'] = (function () {
 					this.previousX = x;
 					this.previousY = y;
 				}
-				this.paper.path("M" + this.previousX + " " + this.previousY + "L" + x + " " + y).attr(
-				{
-					"stroke-width": this.strokeWidth + "px",
-					"stroke-linecap": "round",
-					stroke: this.strokeColor
-				});
+				
+				this.renderLine(this.previousX, this.previousY, x, y);
 				
 				this.previousX = x;
 				this.previousY = y;
@@ -115,6 +120,16 @@ window['JRPad'] = (function () {
 			this.previousY = 0;
 		}
 	}
+	
+	function renderLine(prevx, prevy, x, y)
+	{
+		this.paper.path("M" + prevx + " " + prevy + "L" + x + " " + y).attr(
+		{
+			"stroke-width": this.strokeWidth + "px",
+			"stroke-linecap": "round",
+			stroke: this.strokeColor
+		});
+	}
 
 	function eraser()
 	{
@@ -129,6 +144,11 @@ window['JRPad'] = (function () {
 	function setWidth(widthValue)
 	{
 		this.strokeWidth = widthValue
+	}
+	
+	function getSaveString()
+	{
+		return this.saveString;
 	}
 	
 	return JRPad;
