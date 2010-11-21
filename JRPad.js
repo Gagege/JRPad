@@ -36,6 +36,7 @@ window['JRPad'] = (function () {
 		this.drawLine = drawLine;
 		this.renderLine = renderLine;
 		this.eraser = eraser;
+		this.clear = clear;
 		this.setColor = setColor;
 		this.setWidth = setWidth;
 		
@@ -127,6 +128,18 @@ window['JRPad'] = (function () {
 	function eraser()
 	{
 		this.strokeColor = this.backgroundColor;
+	}
+	
+	function clear()
+	{
+		this.paper.clear();
+		
+		var	jDomNode = $(this.domNode),
+			width = $(jDomNode).width(),
+			height = $(jDomNode).height();
+		
+		this.background = this.paper.rect(this.offset.left - 8, this.offset.top - 8, width, height).attr({fill: "white"});
+		
 	}
 
 	function setColor(colorValue)

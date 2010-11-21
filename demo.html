@@ -44,10 +44,20 @@
 						.addClass('stroke')
 						.text('Stroke: ' + (i = 1+i*i))
 						.appendTo(ctrl);
+				$('<button />')
+					.addClass('eraser')
+					.text('Eraser')
+					.appendTo(ctrl);
+				$('<button />')
+					.addClass('clear')
+					.text('Clear')
+					.appendTo(ctrl);
 				
 				ctrl
 					.delegate('button.colour', 'click', function () { newPad.setColor($(this).text()); })
 					.delegate('button.stroke', 'click', function () { newPad.setWidth(parseInt($(this).text().split(/\s/)[1])); })
+					.delegate('button.eraser', 'click', function () { newPad.eraser();})
+					.delegate('button.clear', 'click', function () { newPad.clear();})
 					.insertAfter(dom);
 			});
 		</script>
