@@ -102,17 +102,10 @@ window['JRPad'] = (function () {
 					this.previousX = x;
 					this.previousY = y;
 				}
-				
 				this.renderLine(this.previousX, this.previousY, x, y);
-				
-				this.previousX = x;
-				this.previousY = y;
 			}
-			else
-			{
-				this.previousX = x;
-				this.previousY = y;
-			}
+			this.previousX = x;
+			this.previousY = y;
 		}
 		else
 		{
