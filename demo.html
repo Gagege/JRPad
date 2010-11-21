@@ -20,13 +20,13 @@
 					colours = ['#ffaa00', '#ff00ff', '#aaff00'],
 					dom = $('#pad')
 					.mousedown(function(e) {
-							newPad.setMouse(true);
+							newPad.setMouseDown(true);
 							newPad.drawDot(e);
 							
 							return false;
 						})
 					.mouseup(function() {
-							newPad.setMouse(false);
+							newPad.setMouseDown(false);
 						})
 					.mousemove(function(e) {
 							newPad.drawLine(e);

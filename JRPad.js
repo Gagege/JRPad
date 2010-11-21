@@ -30,7 +30,7 @@ window['JRPad'] = (function () {
 		}
 	
 		//functions
-		this.setMouse = setMouse;
+		this.setMouseDown = setMouseDown;
 		this.drawDot = drawDot;
 		this.drawLine = drawLine;
 		this.eraser = eraser;
@@ -60,7 +60,7 @@ window['JRPad'] = (function () {
 		
 	}
 
-	function setMouse(isDown)
+	function setMouseDown(isDown)
 	{
 		this.mouseIsDown = isDown;
 	}
