@@ -35,12 +35,12 @@ JRPad tutorial coming soon at gagege.tumblr.com
 -Here's the messy part. Include this code (Assuming your div is named "drawingArea". You can of course call it whatever you want.):
 						$("#drawingArea").mousedown( function(e)
 						{
-							newPad.setMouse(true);
+							newPad.setMouseDown(true);
 							newPad.drawDot(e);
 							return false;
 						}).mouseup( function()
 						{
-							newPad.setMouse(false);
+							newPad.setMouseDown(false);
 						});
 
 						$("#drawingArea").mousemove( function(e)
