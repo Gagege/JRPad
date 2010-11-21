@@ -21,7 +21,7 @@ Example:
 
 It's probably a good idea to be fairly familiar with jQuery before using JRPad: http://docs.jquery.com/Main_Page
 
-JRPad tutorial coming soon at gagege.tumblr.com
+JRPad tutorial coming soon at http://www.herrmannfam.com/jrpad
 
 -Put all JRPad calls inside of a jQuery $(document).ready function.
 -You must pass the id of the div element you want the JRPad to be in to JRPad's constructor:
