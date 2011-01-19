@@ -39,6 +39,7 @@ window['JRPad'] = (function () {
 		this.clear = clear;
 		this.setColor = setColor;
 		this.setWidth = setWidth;
+		this.getSaveString = getSaveString;
 		
 		//variables
 		this.id = domElementID;
@@ -76,15 +77,15 @@ window['JRPad'] = (function () {
 		var x = e.pageX - this.offset.left;
 		var y = e.pageY - this.offset.top;
 		
-		this.renderDot(x, y);
+		this.renderDot(x, y, this.strokeColor, this.strokeWidth);
 	}
 	
-	function renderDot(x, y)
+	function renderDot(x, y, color, width)
 	{
-		this.paper.circle(x, y, this.strokeWidth / 2).attr(
+		this.paper.circle(x, y, width/ 2).attr(
 		{
-			stroke: this.strokeColor,
-			fill: this.strokeColor
+			stroke: color,
+			fill: color
 		});
 	}
 
@@ -103,7 +104,7 @@ window['JRPad'] = (function () {
 					this.previousX = x;
 					this.previousY = y;
 				}
-				this.renderLine(this.previousX, this.previousY, x, y);
+				this.renderLine(this.previousX, this.previousY, x, y, this.strokeColor, this.strokeWidth);
 			}
 			this.previousX = x;
 			this.previousY = y;
@@ -115,13 +116,13 @@ window['JRPad'] = (function () {
 		}
 	}
 	
-	function renderLine(prevx, prevy, x, y)
+	function renderLine(prevx, prevy, x, y, color, width)
 	{
 		this.paper.path("M" + prevx + " " + prevy + "L" + x + " " + y).attr(
 		{
-			"stroke-width": this.strokeWidth + "px",
+			"stroke-width": width + "px",
 			"stroke-linecap": "round",
-			stroke: this.strokeColor
+			stroke: color
 		});
 	}
 
@@ -154,7 +155,7 @@ window['JRPad'] = (function () {
 	
 	function getSaveString()
 	{
-		return this.saveString;
+		return this.saveString + "]";
 	}
 	
 	return JRPad;
