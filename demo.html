@@ -30,6 +30,7 @@
 						})
 					.mousemove(function(e) {
 							newPad.drawLine(e);
+							$('#saveString').text(newPad.getSaveString());
 						});
 				ctrl = $('<div />');
 				for (var c in colours)
@@ -61,5 +62,9 @@
 					.insertAfter(dom);
 			});
 		</script>
+		<div>
+		<p id = "saveString" style="font-size: 8pt">
+		</p>
+		</div>
 	</body>
 </html>

@@ -39,6 +39,7 @@ window['JRPad'] = (function () {
 		this.clear = clear;
 		this.setColor = setColor;
 		this.setWidth = setWidth;
+		this.shapeToSaveString = shapeToSaveString;
 		this.getSaveString = getSaveString;
 		
 		//variables
@@ -62,7 +63,7 @@ window['JRPad'] = (function () {
 		
 		this.mouseIsDown = false;
 		
-		this.saveString = "[";
+		this.saveString = "";
 		
 	}
 
@@ -78,6 +79,7 @@ window['JRPad'] = (function () {
 		var y = e.pageY - this.offset.top;
 		
 		this.renderDot(x, y, this.strokeColor, this.strokeWidth);
+		this.shapeToSaveString("dot", x, y, this.strokeColor, this.strokeWidth);
 	}
 	
 	function renderDot(x, y, color, width)
@@ -105,6 +107,7 @@ window['JRPad'] = (function () {
 					this.previousY = y;
 				}
 				this.renderLine(this.previousX, this.previousY, x, y, this.strokeColor, this.strokeWidth);
+				this.shapeToSaveString("line", x, y, this.strokeColor, this.strokeWidth);
 			}
 			this.previousX = x;
 			this.previousY = y;
@@ -153,9 +156,20 @@ window['JRPad'] = (function () {
 		this.strokeWidth = widthValue
 	}
 	
+	function shapeToSaveString(shapeType, x, y, color, width)
+	{
+		this.saveString += "[" +
+									shapeType + "|" +
+									x + "|" +
+									y + "|" +
+									color + "|" +
+									width +
+									"]";
+	}
+	
 	function getSaveString()
 	{
-		return this.saveString + "]";
+		return this.saveString;
 	}
 	
 	return JRPad;
