@@ -1,70 +1,81 @@
-<!DOCTYPE html>
 <html>
-	<head>	
-		<title>JRPad demo</title>
-		<style>
-			#pad {
-				width : 800px;
-				height : 600px;
-			}
-		</style>
-	</head>
-	<body>
-		<div id="pad"></div>
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
-		<script type="text/javascript" src="https://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js"></script>
-		<script type="text/javascript" src="./JRPad.js"></script>
-		<script type="text/javascript">
-			$(function () {
-				var newPad = new JRPad('#pad'),
-					colours = ['#ffaa00', '#ff00ff', '#aaff00'],
-					dom = $('#pad')
-					.mousedown(function(e) {
-							newPad.setMouseDown(true);
-							newPad.drawDot(e);
-							
-							return false;
-						})
-					.mouseup(function() {
-							newPad.setMouseDown(false);
-						})
-					.mousemove(function(e) {
-							newPad.drawLine(e);
-							$('#saveString').text(newPad.getSaveString());
-						});
-				ctrl = $('<div />');
-				for (var c in colours)
-					$('<button />')
-						.addClass('colour')
-						.text(colours[c])
-						.css('backgroundColor', colours[c])
-						.appendTo(ctrl);
-				var i=0;
-				while (i < 10)
-					$('<button />')
-						.addClass('stroke')
-						.text('Stroke: ' + (i = 1+i*i))
-						.appendTo(ctrl);
-				$('<button />')
-					.addClass('eraser')
-					.text('Eraser')
-					.appendTo(ctrl);
-				$('<button />')
-					.addClass('clear')
-					.text('Clear')
-					.appendTo(ctrl);
-				
-				ctrl
-					.delegate('button.colour', 'click', function () { newPad.setColor($(this).text()); })
-					.delegate('button.stroke', 'click', function () { newPad.setWidth(parseInt($(this).text().split(/\s/)[1])); })
-					.delegate('button.eraser', 'click', function () { newPad.eraser();})
-					.delegate('button.clear', 'click', function () { newPad.clear();})
-					.insertAfter(dom);
+<head>
+    <title>JRPad - Javascript mouse-drawing lib.</title>
+	<link rel="icon" type="image/png" href="favicon.png">
+	<script LANGUAGE="JavaScript" type="text/javascript" SRC="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+	<script LANGUAGE="JavaScript" type="text/javascript" SRC="https://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js"></script>
+	<script LANGUAGE="JavaScript" type="text/javascript" SRC="JRPad.js"></script>
+	<script type="text/javascript">
+		$(document).ready( function()
+		{
+			var pad = new JRPad("draw");
+
+			var mouseIsDown = false;
+
+			$("#draw").mousedown( function(e)
+			{
+				pad.setMouseDown(true);
+				pad.drawDot(e);
+			}).mouseup( function()
+			{
+				pad.setMouseDown(false);
 			});
-		</script>
-		<div>
-		<p id = "saveString" style="font-size: 8pt">
-		</p>
-		</div>
+
+			$("#draw").mousemove( function(e)
+			{
+				pad.drawLine(e);
+			});
+
+			$("#eraser").click( function()
+			{
+				pad.eraser();
+			});
+
+			$(".color").click( function()
+			{
+				pad.setColor(this.id);
+			});
+
+			$("#width").change( function()
+			{
+				pad.setWidth(this.value);
+			});
+		});
+	</script>
+</head>
+	<body style="background-color:tan;">
+		<form id="form1">
+			<div id="draw" style="width:800px; height:450px; border: 1px solid black"></div>
+			<div>
+			<div style="float:left; padding: 0px 2px 0px 0px;">Color:</div>
+
+			<div class="color" id="red" style="float:left; width:20px; height:20px; border:1px solid white; background-color:red;"></div>
+			<div class="color" id="green" style="float:left; width:20px; height:20px; border:1px solid white; background-color:green;"></div>
+			<div class="color" id="blue" style="float:left; width:20px; height:20px; border:1px solid white; background-color:blue;"></div>
+			<div class="color" id="yellow" style="float:left; width:20px; height:20px; border:1px solid white; background-color:yellow;"></div>
+			<div class="color" id="purple" style="float:left; width:20px; height:20px; border:1px solid white; background-color:purple;"></div>
+			<div class="color" id="orange" style="float:left; width:20px; height:20px; border:1px solid white; background-color:orange;"></div>
+			<div class="color" id="grey" style="float:left; width:20px; height:20px; border:1px solid white; background-color:grey;"></div>
+			<div class="color" id="black" style="float:left; width:20px; height:20px; border:1px solid white; background-color:black;"></div>
+			</div>
+			<div>
+				<div style="float:left; padding: 0px 0px 0px 10px;">Stroke width:</div>
+				<select id="width"> 
+					<option value="1">1px</option>
+					<option value="2">2px</option>
+					<option value="3">3px</option>
+					<option value="4">4px</option>
+					<option value="5">5px</option>
+					<option value="6">6px</option>
+					<option value="7">7px</option>
+					<option value="8">8px</option>
+					<option value="9">9px</option>
+					<option value="10">10px</option>
+					<option value="11">11px</option>
+					<option value="12">12px</option>
+				</select>
+			</div>
+			<div style="clear:both;"><a id="eraser" href="#">Eraser</a></div>
+		</form>
 	</body>
 </html>
