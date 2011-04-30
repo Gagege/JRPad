@@ -79,7 +79,7 @@ window['JRPad'] = (function () {
 		var y = e.pageY - this.offset.top;
 		
 		this.renderDot(x, y, this.strokeColor, this.strokeWidth);
-		this.shapeToSaveString("dot", x, y, this.strokeColor, this.strokeWidth);
+		this.shapeToSaveString("d", x, y, this.strokeColor, this.strokeWidth);
 	}
 	
 	function renderDot(x, y, color, width)
@@ -107,7 +107,7 @@ window['JRPad'] = (function () {
 					this.previousY = y;
 				}
 				this.renderLine(this.previousX, this.previousY, x, y, this.strokeColor, this.strokeWidth);
-				this.shapeToSaveString("line", x, y, this.strokeColor, this.strokeWidth);
+				this.shapeToSaveString("l", x, y, this.strokeColor, this.strokeWidth);
 			}
 			this.previousX = x;
 			this.previousY = y;
