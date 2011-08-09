@@ -17,7 +17,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-			
+
 window['JRPad'] = (function () {
 	function JRPad(domElementID)
 	{
@@ -41,6 +41,8 @@ window['JRPad'] = (function () {
 		this.setWidth = setWidth;
 		this.shapeToSaveString = shapeToSaveString;
 		this.getSaveString = getSaveString;
+		this.parseSaveString = parseSaveString;
+		this.renderShapeFromStringData = renderShapeFromStringData;
 		
 		//variables
 		this.id = domElementID;
@@ -58,12 +60,27 @@ window['JRPad'] = (function () {
 		this.previousX = 0;
 		this.previousY = 0;
 
-		this.paper = Raphael(this.domNode, width, height);
-		this.background = this.paper.rect(this.offset.left - 8, this.offset.top - 8, width, height).attr({fill: "white"});
+		this.paper = new Raphael(this.domNode, width, height);
+		this.background = this.paper.rect(this.offset.left - 8, this.offset.top - 8, width, height).attr({fill: this.backgroundColor});
 		
 		this.mouseIsDown = false;
 		
 		this.saveString = "";
+		
+		var pad = this; // alias this so we can reference in closures
+
+	    $(pad.domNode)
+			.mousedown( function(e) {
+				pad.setMouseDown(true);
+				pad.drawDot(e);
+				return false;
+			})
+			.mouseup( function() {
+				pad.setMouseDown(false);
+			})
+			.mousemove( function(e) {
+				pad.drawLine(e);
+			});
 		
 	}
 
@@ -79,7 +96,6 @@ window['JRPad'] = (function () {
 		var y = e.pageY - this.offset.top;
 		
 		this.renderDot(x, y, this.strokeColor, this.strokeWidth);
-		this.shapeToSaveString("d", x, y, this.strokeColor, this.strokeWidth);
 	}
 	
 	function renderDot(x, y, color, width)
@@ -89,6 +105,7 @@ window['JRPad'] = (function () {
 			stroke: color,
 			fill: color
 		});
+		this.shapeToSaveString("d", x, y, color, width);
 	}
 
 	function drawLine(e)
@@ -107,7 +124,6 @@ window['JRPad'] = (function () {
 					this.previousY = y;
 				}
 				this.renderLine(this.previousX, this.previousY, x, y, this.strokeColor, this.strokeWidth);
-				this.shapeToSaveString("l", x, y, this.strokeColor, this.strokeWidth);
 			}
 			this.previousX = x;
 			this.previousY = y;
@@ -127,6 +143,7 @@ window['JRPad'] = (function () {
 			"stroke-linecap": "round",
 			stroke: color
 		});
+		this.shapeToSaveString("l", x, y, color, width);
 	}
 
 	function eraser()
@@ -158,18 +175,83 @@ window['JRPad'] = (function () {
 	
 	function shapeToSaveString(shapeType, x, y, color, width)
 	{
-		this.saveString += "[" +
-									shapeType + "|" +
+		this.saveString += shapeType + "|" +
 									x + "|" +
 									y + "|" +
 									color + "|" +
 									width +
-									"]";
+									",";
 	}
 	
 	function getSaveString()
 	{
 		return this.saveString;
+	}
+	
+	function parseSaveString(saveString)
+	{
+		saveString = jQuery.trim(saveString);
+		
+		var shapeType = "";
+		var previousX = "";
+		var previousY = "";
+		var x = "";
+		var y = "";
+		var color = "";
+		var width = "";
+		var currentAttribute = 0;
+		
+		for(i = 0; i < saveString.length; i++)
+		{
+			var currentChar = saveString.charAt(i);
+			switch(currentChar)
+			{
+				case ',':
+					this.renderShapeFromStringData(shapeType, previousX, previousY, x, y, color, width);
+					shapeType = "";
+					previousX = x;
+					previousY = y;
+					x = "";
+					y = "";
+					color = "";
+					width = "";
+					currentAttribute = 0;
+					break;
+				case '|':
+					currentAttribute++;
+					break;
+				default:
+					if(currentAttribute == 0)
+						shapeType = currentChar;
+					else if(currentAttribute == 1)
+						x += currentChar;
+					else if(currentAttribute == 2)
+						y += currentChar;
+					else if(currentAttribute == 3)
+						color += currentChar;
+					else if(currentAttribute == 4)
+						width += currentChar;
+			}
+		}
+		this.renderShapeFromStringData(shapeType, previousX, previousY, x, y, color, width);
+	}
+	
+	function renderShapeFromStringData(shapeType, previousX, previousY, x, y, color, width)
+	{
+		if(shapeType == 'l')
+		{
+			//get rid of crazy line from 0,0
+			if(previousX == 0 || previousY == 0)
+			{
+				previousX = x;
+				previouxY = y;
+			}
+			this.renderLine(previousX, previousY, x, y, color, width);
+		}
+		else if(shapeType == 'd')
+		{
+			this.renderDot(x, y, color, width);
+		}
 	}
 	
 	return JRPad;

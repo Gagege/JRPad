@@ -10,27 +10,8 @@
 		{
 			var pad = new JRPad("draw");
 
-			var mouseIsDown = false;
-
-			$("#draw").mousedown( function(e)
-			{
-				pad.setMouseDown(true);
-				pad.drawDot(e);
-			}).mouseup( function()
-			{
-				pad.setMouseDown(false);
-			});
-
-			$("#draw").mousemove( function(e)
-			{
-				pad.drawLine(e);
-			});
-
-			$("#eraser").click( function()
-			{
-				pad.eraser();
-			});
-
+			pad.setWidth(3);
+			
 			$(".color").click( function()
 			{
 				pad.setColor(this.id);
@@ -40,14 +21,48 @@
 			{
 				pad.setWidth(this.value);
 			});
+
+			$("#eraser").click( function()
+			{
+				pad.eraser();
+			});
+			
+			$(".clear").click( function()
+			{
+				pad.clear();
+			});
+			
+			$("#getSaveString").click( function()
+			{
+				$("#saveText").text(pad.getSaveString());
+			});
+			
+			$("#loadDrawingFromText").click( function()
+			{
+				var saveString = $("#saveText").val();
+				pad.parseSaveString(saveString);
+			});
 		});
 	</script>
 </head>
-	<body style="background-color:tan;">
+	<body style="background-color:darkgrey;">
 		<form id="form1">
-			<div id="draw" style="width:800px; height:450px; border: 1px solid black"></div>
-			<div>
-			<div style="float:left; padding: 0px 2px 0px 0px;">Color:</div>
+			<div id="draw" style="float:left; width:600px; height:400px; border: 1px solid black"></div>
+			<div id="saveDemo" style="float:left; margin: 4pt;">
+				<textarea id="saveText" cols="44" rows="20">
+				</textarea>
+				<br />
+				<a href="#" id="getSaveString">
+					Get text version of drawing
+				</a>
+				<br />
+				...or paste text from a previous drawing and...
+				<br />
+				<a href="#" id="loadDrawingFromText">
+					load a drawing from text!
+				</a>
+			</div>
+			<div style="clear:both; float:left; padding: 0px 2px 0px 0px;">Color:</div>
 
 			<div class="color" id="red" style="float:left; width:20px; height:20px; border:1px solid white; background-color:red;"></div>
 			<div class="color" id="green" style="float:left; width:20px; height:20px; border:1px solid white; background-color:green;"></div>
@@ -58,12 +73,12 @@
 			<div class="color" id="grey" style="float:left; width:20px; height:20px; border:1px solid white; background-color:grey;"></div>
 			<div class="color" id="black" style="float:left; width:20px; height:20px; border:1px solid white; background-color:black;"></div>
 			</div>
-			<div>
-				<div style="float:left; padding: 0px 0px 0px 10px;">Stroke width:</div>
+			<div style="float:left;">
+				Stroke width:
 				<select id="width"> 
 					<option value="1">1px</option>
 					<option value="2">2px</option>
-					<option value="3">3px</option>
+					<option selected="true" value="3">3px</option>
 					<option value="4">4px</option>
 					<option value="5">5px</option>
 					<option value="6">6px</option>
@@ -75,7 +90,10 @@
 					<option value="12">12px</option>
 				</select>
 			</div>
-			<div style="clear:both;"><a id="eraser" href="#">Eraser</a></div>
+			<div style="clear:both">
+				<a id="eraser" href="#">Eraser</a>
+				<a id="clear" href="#">Clear</a>
+			</div>
 		</form>
 	</body>
 </html>
